@@ -36,6 +36,8 @@
                                 <th>Nama Kriteria</th>
                                 <th>Tipe</th>
                                 <th>Bobot</th>
+                                <th>Target</th>
+                                <th>Jenis Faktor</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -71,10 +73,14 @@
 
             <!-- View Perhitungan -->
             <section id="view-perhitungan" class="view-section">
-                <div class="calc-tabs">
+                <div class="calc-tabs" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
                     <button class="calc-tab active" data-method="saw">Metode SAW</button>
                     <button class="calc-tab" data-method="wp">Metode WP</button>
                     <button class="calc-tab" data-method="smart">Metode SMART</button>
+                    <button class="calc-tab" data-method="ahp">Metode AHP</button>
+                    <button class="calc-tab" data-method="topsis">Metode TOPSIS</button>
+                    <button class="calc-tab" data-method="moora">Metode MOORA</button>
+                    <button class="calc-tab" data-method="profile">Metode Profile Matching</button>
                 </div>
                 
                 <div id="calc-result-container" class="calc-result">
@@ -104,6 +110,17 @@
                 <div class="form-group">
                     <label>Bobot (Misal: 10, 20, atau 0.2)</label>
                     <input type="number" id="kriteria-bobot" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Target Nilai (Profile Matching)</label>
+                    <input type="number" id="kriteria-target" step="0.01" value="3" required>
+                </div>
+                <div class="form-group">
+                    <label>Jenis Faktor (Profile Matching)</label>
+                    <select id="kriteria-factor-type">
+                        <option value="core">Core Factor (CF)</option>
+                        <option value="secondary">Secondary Factor (SF)</option>
+                    </select>
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="neo-btn btn-secondary close-modal">Batal</button>
