@@ -986,14 +986,14 @@ const MethodRenderer = {
         if (data.isConsistent) {
             consistencyAlert = `
                 <div style="background:var(--success); padding:1rem; border:3px solid var(--border-color); border-radius:4px; box-shadow: 4px 4px 0 var(--border-color); margin-bottom:2rem;">
-                    <h4>✔ Matriks Konsisten (CR = ${parseFloat(data.cr.toFixed(4))} &le; 0.1)</h4>
+                    <h4>Matriks Konsisten (CR = ${parseFloat(data.cr.toFixed(4))} &le; 0.1)</h4>
                     <p style="font-size:0.9rem;">Perbandingan berpasangan kriteria valid dan dapat digunakan untuk perhitungan selanjutnya.</p>
                 </div>
             `;
         } else {
             consistencyAlert = `
                 <div style="background:var(--danger); padding:1rem; border:3px solid var(--border-color); border-radius:4px; box-shadow: 4px 4px 0 var(--border-color); margin-bottom:2rem;">
-                    <h4>⚠ Matriks TIDAK Konsisten (CR = ${parseFloat(data.cr.toFixed(4))} &gt; 0.1)</h4>
+                    <h4>Matriks Tidak Konsisten (CR = ${parseFloat(data.cr.toFixed(4))} &gt; 0.1)</h4>
                     <p style="font-size:0.9rem;">Nilai perbandingan berpasangan kriteria kurang konsisten. Harap tinjau kembali perbandingan Anda agar nilai CR &le; 0.1.</p>
                 </div>
             `;
@@ -1139,7 +1139,7 @@ const MethodRenderer = {
                     <div style="flex:1; min-width:250px; background:#fff; padding:1rem; border:2px solid var(--border-color); border-radius:4px;">
                         <h4>1. Gap & Pembobotan</h4>
                         <p style="font-size:0.85rem;">Gap = Nilai - Target</p>
-                        <p style="font-size:0.8rem; color:#555;">Gap 0 ➡️ 5 | Gap 1 ➡️ 4.5 | Gap -1 ➡️ 4 | Gap 2 ➡️ 3.5 | Gap -2 ➡️ 3 | Gap 3 ➡️ 2.5 | Gap -3 ➡️ 2 | Gap 4 ➡️ 1.5 | Gap -4 ➡️ 1</p>
+                        <p style="font-size:0.8rem; color:#555; font-family: monospace;">Gap  0 &rarr; 5.0 | Gap  1 &rarr; 4.5 | Gap -1 &rarr; 4.0 | Gap  2 &rarr; 3.5 | Gap -2 &rarr; 3.0 | Gap  3 &rarr; 2.5 | Gap -3 &rarr; 2.0 | Gap  4 &rarr; 1.5 | Gap -4 &rarr; 1.0</p>
                     </div>
                     <div style="flex:1; min-width:250px; background:#fff; padding:1rem; border:2px solid var(--border-color); border-radius:4px;">
                         <h4>2. NCF & NSF</h4>
@@ -1153,7 +1153,7 @@ const MethodRenderer = {
                     </div>
                 </div>
                 <div style="font-size:0.85rem; color:#555; background:#fff; padding:0.8rem; border:2px solid var(--border-color); border-radius:4px; margin-top:0.8rem;">
-                    💡 <strong>Tip:</strong> Disarankan menggunakan skala nilai yang seragam (misal: 1 s.d. 10) agar perhitungan Gap lebih relevan.
+                    <strong>Tip:</strong> Disarankan menggunakan skala nilai yang seragam (misal: 1 s.d. 10) agar perhitungan Gap lebih relevan.
                 </div>
             </div>
         `;
