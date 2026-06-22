@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pendukung Keputusan (SPK)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="neo-header">
+            <h1>SPK Multi-Metode</h1>
+            <p>Sistem Pendukung Keputusan dengan SAW, WP, dan SMART</p>
+        </header>
+
+        <nav class="neo-nav">
+            <button class="nav-btn active" data-target="view-kriteria">Data Kriteria</button>
+            <button class="nav-btn" data-target="view-alternatif">Data Alternatif & Penilaian</button>
+            <button class="nav-btn" data-target="view-perhitungan">Perhitungan</button>
+            <button class="nav-btn btn-danger" id="btn-reset-data">Reset Data Default</button>
+        </nav>
+
+        <main class="neo-main">
+            <!-- View Kriteria -->
+            <section id="view-kriteria" class="view-section active">
+                <div class="section-header">
+                    <h2>Manajemen Kriteria</h2>
+                    <button class="neo-btn" id="btn-add-kriteria">+ Tambah Kriteria</button>
+                </div>
+                <div class="table-container">
+                    <table id="table-kriteria" class="neo-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Kriteria</th>
+                                <th>Tipe</th>
+                                <th>Bobot</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data akan dimuat melalui JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- View Alternatif -->
+            <section id="view-alternatif" class="view-section">
+                <div class="section-header">
+                    <h2>Data Alternatif & Penilaian</h2>
+                    <button class="neo-btn" id="btn-add-alternatif">+ Tambah Alternatif</button>
+                </div>
+                <div class="table-container">
+                    <table id="table-alternatif" class="neo-table">
+                        <thead>
+                            <tr id="table-alternatif-header">
+                                <th>ID</th>
+                                <th>Nama Alternatif</th>
+                                <!-- Kolom Kriteria akan digenerate dinamis -->
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data akan dimuat melalui JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- View Perhitungan -->
+            <section id="view-perhitungan" class="view-section">
+                <div class="calc-tabs">
+                    <button class="calc-tab active" data-method="saw">Metode SAW</button>
+                    <button class="calc-tab" data-method="wp">Metode WP</button>
+                    <button class="calc-tab" data-method="smart">Metode SMART</button>
+                </div>
+                
+                <div id="calc-result-container" class="calc-result">
+                    <!-- Hasil perhitungan akan dirender di sini -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Form Kriteria -->
+    <div id="modal-kriteria" class="neo-modal">
+        <div class="modal-content">
+            <h3 id="modal-kriteria-title">Tambah Kriteria</h3>
+            <form id="form-kriteria">
+                <input type="hidden" id="kriteria-id">
+                <div class="form-group">
+                    <label>Nama Kriteria</label>
+                    <input type="text" id="kriteria-nama" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipe</label>
+                    <select id="kriteria-tipe">
+                        <option value="benefit">Benefit</option>
+                        <option value="cost">Cost</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Bobot (Misal: 10, 20, atau 0.2)</label>
+                    <input type="number" id="kriteria-bobot" step="0.01" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="neo-btn btn-secondary close-modal">Batal</button>
+                    <button type="submit" class="neo-btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Form Alternatif -->
+    <div id="modal-alternatif" class="neo-modal">
+        <div class="modal-content">
+            <h3 id="modal-alternatif-title">Tambah Alternatif</h3>
+            <form id="form-alternatif">
+                <input type="hidden" id="alternatif-id">
+                <div class="form-group">
+                    <label>Nama Alternatif</label>
+                    <input type="text" id="alternatif-nama" required>
+                </div>
+                <div id="penilaian-inputs-container">
+                    <!-- Input penilaian akan digenerate dinamis berdasarkan kriteria -->
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="neo-btn btn-secondary close-modal">Batal</button>
+                    <button type="submit" class="neo-btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
