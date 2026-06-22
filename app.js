@@ -717,6 +717,16 @@ const SPKEngine = {
             return 1.0;
         };
 
+        let wCore = 0.6;
+        let wSecondary = 0.4;
+        if (coreCriteria.length === 0) {
+            wCore = 0.0;
+            wSecondary = 1.0;
+        } else if (secondaryCriteria.length === 0) {
+            wCore = 1.0;
+            wSecondary = 0.0;
+        }
+
         alternatif.forEach(a => {
             gaps[a.id] = {};
             gapWeights[a.id] = {};
@@ -741,7 +751,7 @@ const SPKEngine = {
 
             const valNcf = coreCriteria.length > 0 ? sumCore / coreCriteria.length : 0;
             const valNsf = secondaryCriteria.length > 0 ? sumSecondary / secondaryCriteria.length : 0;
-            const total = 0.6 * valNcf + 0.4 * valNsf;
+            const total = wCore * valNcf + wSecondary * valNsf;
 
             ncf[a.id] = valNcf;
             nsf[a.id] = valNsf;
@@ -751,7 +761,7 @@ const SPKEngine = {
 
         hasilAkhir.sort((a, b) => b.nilai - a.nilai);
 
-        return { gaps, gapWeights, coreCriteria, secondaryCriteria, ncf, nsf, hasilAkhir };
+        return { gaps, gapWeights, coreCriteria, secondaryCriteria, ncf, nsf, wCore, wSecondary, hasilAkhir };
     }
 };
 
@@ -1137,8 +1147,9 @@ const MethodRenderer = {
                         <p style="font-size:0.85rem;">NSF = &sum; Bobot Secondary / Jumlah Secondary</p>
                     </div>
                     <div style="flex:1; min-width:250px; background:#fff; padding:1rem; border:2px solid var(--border-color); border-radius:4px;">
-                        <h4>3. Nilai Total (60% / 40%)</h4>
-                        <p style="font-size:0.85rem;">Total = 60% &times; NCF + 40% &times; NSF</p>
+                        <h4>3. Nilai Total</h4>
+                        <p style="font-size:0.85rem;">Total = (Bobot CF &times; NCF) + (Bobot SF &times; NSF)</p>
+                        <p style="font-size:0.8rem; color:#555;">*Bobot saat ini: ${data.wCore * 100}% CF / ${data.wSecondary * 100}% SF</p>
                     </div>
                 </div>
                 <div style="font-size:0.85rem; color:#555; background:#fff; padding:0.8rem; border:2px solid var(--border-color); border-radius:4px; margin-top:0.8rem;">
@@ -1211,7 +1222,7 @@ const MethodRenderer = {
         html += gapWeightTable;
 
         html += `<h3>4. Perhitungan NCF, NSF, dan Nilai Total</h3>`;
-        let pmProcessTable = `<div class="table-container"><table class="neo-table" style="margin-bottom:2rem;"><thead><tr><th>Alternatif</th><th>Core Factor (NCF)</th><th>Secondary Factor (NSF)</th><th>Nilai Akhir (60% NCF + 40% NSF)</th></tr></thead><tbody>`;
+        let pmProcessTable = `<div class="table-container"><table class="neo-table" style="margin-bottom:2rem;"><thead><tr><th>Alternatif</th><th>Core Factor (NCF)</th><th>Secondary Factor (NSF)</th><th>Nilai Akhir (${data.wCore * 100}% NCF + ${data.wSecondary * 100}% NSF)</th></tr></thead><tbody>`;
 
         alternatif.forEach(a => {
             const ncfVal = data.ncf[a.id];
@@ -1223,9 +1234,9 @@ const MethodRenderer = {
 
             pmProcessTable += `<tr>
                 <td><strong>${a.nama}</strong></td>
-                <td>(${coreList}) / ${data.coreCriteria.length} = <strong>${parseFloat(ncfVal.toFixed(4))}</strong></td>
-                <td>(${secList}) / ${data.secondaryCriteria.length} = <strong>${parseFloat(nsfVal.toFixed(4))}</strong></td>
-                <td style="font-weight:bold; font-size:1.15rem; background:#fafafa;">0.6 &times; ${parseFloat(ncfVal.toFixed(2))} + 0.4 &times; ${parseFloat(nsfVal.toFixed(2))} = <strong>${parseFloat(totalVal.toFixed(4))}</strong></td>
+                <td>(${coreList}) / ${data.coreCriteria.length || 1} = <strong>${parseFloat(ncfVal.toFixed(4))}</strong></td>
+                <td>(${secList}) / ${data.secondaryCriteria.length || 1} = <strong>${parseFloat(nsfVal.toFixed(4))}</strong></td>
+                <td style="font-weight:bold; font-size:1.15rem; background:#fafafa;">${data.wCore} &times; ${parseFloat(ncfVal.toFixed(2))} + ${data.wSecondary} &times; ${parseFloat(nsfVal.toFixed(2))} = <strong>${parseFloat(totalVal.toFixed(4))}</strong></td>
             </tr>`;
         });
         pmProcessTable += `</tbody></table></div>`;
@@ -1249,19 +1260,7 @@ function renderPerhitungan(method) {
         return;
     }
 
-    if (method === 'profile') {
-        const coreCount = appState.kriteria.filter(k => k.factor_type === 'core').length;
-        const secondaryCount = appState.kriteria.filter(k => k.factor_type !== 'core').length;
-        if (coreCount === 0 && secondaryCount === 0) {
-            // Handled by general check
-        } else if (coreCount === 0) {
-            container.innerHTML = `<div class="neo-modal active" style="position:relative; background:none"><div class="modal-content"><h3 style="color:var(--danger)">Core Factor Kosong</h3><p>Metode Profile Matching membutuhkan minimal 1 kriteria dengan jenis Core Factor (CF).</p></div></div>`;
-            return;
-        } else if (secondaryCount === 0) {
-            container.innerHTML = `<div class="neo-modal active" style="position:relative; background:none"><div class="modal-content"><h3 style="color:var(--danger)">Secondary Factor Kosong</h3><p>Metode Profile Matching membutuhkan minimal 1 kriteria dengan jenis Secondary Factor (SF).</p></div></div>`;
-            return;
-        }
-    }
+
 
     // Call pure math engine
     let engineData;
